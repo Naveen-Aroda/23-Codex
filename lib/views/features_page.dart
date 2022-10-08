@@ -1,4 +1,7 @@
+import 'package:demo_hackit/detection_pages/crop_quality.dart';
 import 'package:demo_hackit/detection_pages/disease_detection.dart';
+import 'package:demo_hackit/detection_pages/weed_detection.dart';
+import 'package:demo_hackit/detection_pages/yeild_prediction.dart';
 import 'package:demo_hackit/pages/account_page.dart';
 import 'package:demo_hackit/pages/home_page.dart';
 import 'package:demo_hackit/theme/padding.dart';
@@ -68,10 +71,19 @@ class _FeaturesPageState extends State<FeaturesPage> {
             ],
           ),
           const SizedBox(
-            height: 20,
+            height: spacer,
           ),
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CropQuality(
+                      title: widget.title,
+                      category: widget.title,
+                    ),
+                  ));
+            },
             child: FeaturesCard(
               icon: Icon(
                 Icons.image_search,
@@ -85,14 +97,23 @@ class _FeaturesPageState extends State<FeaturesPage> {
             height: 20,
           ),
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => YieldPrediction(
+                      title: widget.title,
+                      category: widget.title,
+                    ),
+                  ));
+            },
             child: FeaturesCard(
               icon: Icon(
                 Icons.online_prediction,
                 size: 38,
                 color: Color.fromARGB(255, 161, 207, 115),
               ),
-              title: " Yeild Prediction",
+              title: " Yield Prediction",
             ),
           ),
           SizedBox(
@@ -105,6 +126,7 @@ class _FeaturesPageState extends State<FeaturesPage> {
                   MaterialPageRoute(
                     builder: (context) => DiseaseDetection(
                       title: widget.title,
+                      category: widget.title,
                     ),
                   ));
             },
@@ -121,7 +143,16 @@ class _FeaturesPageState extends State<FeaturesPage> {
             height: 20,
           ),
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => WeedDetection(
+                      title: widget.title,
+                      category: widget.title,
+                    ),
+                  ));
+            },
             child: FeaturesCard(
               icon: Icon(
                 Icons.search_sharp,

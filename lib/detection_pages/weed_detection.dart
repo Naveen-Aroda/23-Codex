@@ -1,19 +1,23 @@
 import 'dart:io';
 
+import 'package:demo_hackit/theme/padding.dart';
+import 'package:demo_hackit/util/model_locations.dart';
+import 'package:demo_hackit/widget/custom_heading.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tflite/tflite.dart';
 
-class DiseaseDetection extends StatefulWidget {
+class WeedDetection extends StatefulWidget {
   final String title;
+  final String category;
 
-  const DiseaseDetection({super.key, required this.title});
+  const WeedDetection({super.key, required this.title, required this.category});
 
   @override
-  _DiseaseDetectionState createState() => _DiseaseDetectionState();
+  WeedDetectionState createState() => WeedDetectionState();
 }
 
-class _DiseaseDetectionState extends State<DiseaseDetection> {
+class WeedDetectionState extends State<WeedDetection> {
   List? _outputs;
   File? _image;
   bool _loading = false;
@@ -33,8 +37,8 @@ class _DiseaseDetectionState extends State<DiseaseDetection> {
 
   loadModel() async {
     await Tflite.loadModel(
-      model: "assets/model/disease/cotton.tflite",
-      labels: "assets/model/disease/cottonlabels.txt",
+      model: MyModels.weedDetectionModel,
+      labels: MyModels.weedDetectiontxt,
       numThreads: 1,
     );
   }
@@ -72,10 +76,11 @@ class _DiseaseDetectionState extends State<DiseaseDetection> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterTop,
       backgroundColor: Color.fromARGB(255, 229, 243, 213),
       appBar: AppBar(
         title: Text(
-          widget.title.toString() + " Disease",
+          widget.title.toString() + " Weed Detection",
         ),
         elevation: 0.0,
         backgroundColor: Color.fromARGB(255, 75, 117, 32),
@@ -87,10 +92,7 @@ class _DiseaseDetectionState extends State<DiseaseDetection> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           _loading
-              ? Container(
-                  height: 300,
-                  width: 300,
-                )
+              ? Center(child: CircularProgressIndicator())
               : Container(
                   margin: EdgeInsets.all(20),
                   width: MediaQuery.of(context).size.width,
@@ -103,7 +105,10 @@ class _DiseaseDetectionState extends State<DiseaseDetection> {
                         height: 20,
                       ),
                       _image == null
-                          ? Container()
+                          ? Visibility(
+                              child: Container(),
+                              visible: false,
+                            )
                           : _outputs != null
                               ? Text(
                                   _outputs![0]["label"],
@@ -114,6 +119,17 @@ class _DiseaseDetectionState extends State<DiseaseDetection> {
                     ],
                   ),
                 ),
+          !_loading && _image == null
+              ? Center(
+                  child: CustomHeading(
+                      subTitle: " to Detect Weed in ${widget.title} Crops",
+                      title: "Select an Image",
+                      color: Color.fromARGB(255, 75, 117, 32)),
+                )
+              : Container(
+                  height: smallSpacer,
+                ),
+          SizedBox(height: spacer),
           FloatingActionButton(
             tooltip: 'Pick Image',
             onPressed: pickImage,
